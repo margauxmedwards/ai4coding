@@ -1,0 +1,15 @@
+{
+  "methods": ["Baseline", "Candidate"],
+  "baseline": "Baseline",
+  "candidate": "Candidate",
+  "seeds": [1, 2, 3],
+  "dataset_version": "toy-v1",
+  "split": "test",
+  "metric": "accuracy",
+  "score_range": [0, 1],
+  "higher_is_better": true,
+  "aggregation": "arithmetic_mean_across_seeds",
+  "difference": "candidate_mean_minus_baseline_mean",
+  "require_complete_runs": true,
+  "reject_duplicate_method_seed": true
+}

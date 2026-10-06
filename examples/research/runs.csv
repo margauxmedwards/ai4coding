@@ -1,0 +1,7 @@
+method,seed,dataset_version,split,metric,score
+Baseline,1,toy-v1,test,accuracy,0.77
+Baseline,2,toy-v1,test,accuracy,0.79
+Baseline,3,toy-v1,test,accuracy,0.81
+Candidate,1,toy-v1,test,accuracy,0.80
+Candidate,2,toy-v1,test,accuracy,0.82
+Candidate,3,toy-v1,test,accuracy,0.84

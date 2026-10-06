@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#PBS -N rosbag_sample
+#PBS -l select=1:ncpus=4:mem=16gb
+#PBS -l walltime=00:20:00
+# Add the queue directive verified for your site.
+set -euo pipefail
+: "${PBS_O_WORKDIR:?missing project directory}"
+: "${PBS_JOBID:?missing job id}"
+: "${INPUT_BAG:?set an absolute input file path}"
+: "${OUTPUT_DIR:?set a new absolute output directory}"
+[[ "$INPUT_BAG" = /* && "$OUTPUT_DIR" = /* ]]
+[[ -f "$INPUT_BAG" && ! -e "$OUTPUT_DIR" ]]
+cd "$PBS_O_WORKDIR"
+JOB_ID="${PBS_JOBID%%.*}"
+mkdir -p logs/convert-rosbag
+exec >"logs/convert-rosbag/${JOB_ID}.out" \
+     2>"logs/convert-rosbag/${JOB_ID}.err"
+
+# Site adapter: confirm this variable with cluster docs.
+: "${PBS_TMPDIR:?confirm the site scratch location}"
+WORK_DIR=$(mktemp -d "${PBS_TMPDIR}/convert.XXXXXX")
+cp -- "$INPUT_BAG" "$WORK_DIR/input.bag"
+
+# Project adapter: these tasks must exist in pixi.toml.
+pixi run convert-rosbag --input "$WORK_DIR/input.bag" \
+  --output "$WORK_DIR/output"
+pixi run validate-conversion --input "$WORK_DIR/input.bag" \
+  --output "$WORK_DIR/output"
+
+# A partial copy must not be mistaken for a completed run.
+mkdir -- "$OUTPUT_DIR"
+cp -a -- "$WORK_DIR/output/." "$OUTPUT_DIR/"
+printf '%s\n' "$PBS_JOBID" > "$OUTPUT_DIR/COMPLETE"
+# Site scratch may be removed when the job ends.
+# Plan durable failure logs/checkpoints before a long run.

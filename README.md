@@ -1,100 +1,46 @@
 # How to get the most out of your tokens
 
-**Context-driven AI for any model**
-> *Tips and tricks from setting up a robotics pipeline*
-> Margaux Edwards · QUT Centre of Robotics · June 2026
+Two complementary presentations by Margaux Edwards, QUT Centre for Robotics. Originally presented June 2026; updated 6 October 2026.
 
----
+| Presentation | Audience | Progression |
+|---|---|---|
+| [Beginner](https://margauxmedwards.github.io/ai4coding/presentation/) | Can read basic code; new to coding agents | Setup → vocabulary → tools/models → task brief → worked bug fix → review/undo → first skill |
+| [Advanced](https://margauxmedwards.github.io/ai4coding/) | Can review diffs and run tests | HPC context → success criteria → checkpoints → PBS template → customisation → tools/models → evaluation → cost/handoffs → verified lessons |
 
-## Talk
+## View and maintain
 
-The presentation is a self-contained HTML file. Open `index.html` in any browser — no build step, no server required.
+Open `index.html` or `presentation/index.html` in a browser. Keep the `assets/` directory alongside them. There is no build step or external runtime dependency. The pages also work without JavaScript; JavaScript only closes the contents menu after navigation.
 
-**Live:** [margauxmedwards.github.io/ai4coding](https://margauxmedwards.github.io/ai4coding)
+Serve locally if preferred: `python3 -m http.server 8000`.
 
----
+Edit the HTML directly and use `assets/presentation.css` for shared styling. Both presentations contain dated, linked official sources. Recheck those sources before refreshing model names. Distinguish a model comparison from a comparison of entire tools; no original benchmark results are claimed here.
 
-## Contents
+## Beginner exercise
 
-| Section | Topic |
-|---|---|
-| 01 | Without context, the model guesses |
-| 02 | Prompting vs context |
-| 03 | Be specific about success |
-| 04 | Ask · Plan · Act |
-| 05 | Constrain the output format + choose the right model |
-| 06 | Before / after — PBS job with and without context |
-| 07 | The repository as a prompt scaffold |
-| 08 | Agent customisations — agents, skills, instructions, hooks, MCP, plugins |
-| 09 | Practical prompt template |
-| 10 | Key takeaways + limitations |
+Download or copy `examples/first-task/` to a disposable folder. With Python 3, run:
 
----
-
-## Key ideas
-
-**Better context beats longer prompts.**
-Structure what the model needs to know in files — not in the chat window.
-
-**Repositories are durable context windows.**
-A repo with `copilot-instructions.md`, skill files, and `AGENTS.md` carries context that chat history forgets.
-
-**Make success observable.**
-Define what done looks like before the model starts. Ask for visible artifacts — plans, commands run, files changed, rollback paths.
-
-**Use Ask → Plan → Act.**
-Match the mode to the task. Don't act until you've asked and planned.
-
-**The cheapest model that reliably does the job is the right model.**
-Better context reduces variance — and variance is what forces you to reach for the expensive model.
-
-**Restarting a fresh chat is often cheaper than continuing a long one.**
-Once context lives in the repo, the model picks up exactly where it left off.
-
----
-
-## Limitations
-
-No model tells you upfront how many tokens a task will consume. Usage only becomes visible after the fact.
-
-Real numbers from the GitHub Copilot AI credit system:
-
-| Task | Credits |
-|---|---|
-| Single file edit | 100+ |
-| Write a PR description | ~30 |
-
-Better context = fewer retries = fewer credits spent.
-
----
-
-## The context stack (from my `tools/`)
-
-```
-.github/
-├── copilot-instructions.md   # always active — repo-wide system prompt
-├── instructions/             # file-aware — applied by glob pattern
-│   ├── ros2-python.md
-│   ├── hpc.md
-│   └── pixi.md
-├── skills/                   # on demand — loaded for specific tasks
-│   ├── hpc-core/SKILL.md
-│   ├── pbs-jobs/SKILL.md
-│   └── wandb-hpc/SKILL.md
-└── agents/
-    └── vpr-pipeline.agent.md
-
-AGENTS.md                     # agent-level guardrails
-.env.example                  # config template — never commit secrets
+```sh
+cd examples/first-task
+python3 -m unittest -v
 ```
 
-These customisations work across models: Claude, Copilot (Azure), self-hosted — including VS Code extensions and GitHub integrations.
+One test intentionally errors on empty input. The learner asks an agent for the smallest fix, then reruns all three tests and reviews the diff. Keep expected test results unchanged. The presentation shows the expected fix.
 
----
+## Advanced example
 
-## References
+`examples/rosbag-sample.pbs` is the same teaching template displayed in the advanced presentation. It is **not a verified Aqua job**. Confirm the queue, resources, scratch variable, environment and project tasks before submission. Its two `pixi` tasks are explicit project adapters, not commands provided by this repository. No cluster job is submitted by this site.
 
-- [QUT Aqua HPC documentation](https://docs.eres.qut.edu.au/about-aqua)
-- [GitHub Copilot agent customisations](https://docs.github.com/en/copilot/customizing-copilot)
+The marker `COMPLETE` is written only after conversion validation and copy-back succeed. The validation task must implement the project's actual data checks. Job submission alone does not establish success.
 
-This presentation was built initially as a set of Canva Slides, which were then given to ChatGPT and Claude for review and comparision. Claude Design was then used to build the html site.
+## What changed
+
+- Gave the talks distinct learning paths and links between them.
+- Added a runnable beginner exercise, verification and undo guidance.
+- Compared Copilot, Claude Code, Codex and Gemini CLI separately from their models.
+- Added a dated model shortlist and a controlled evaluation method.
+- Corrected skill structure, portability, lifecycle hook and memory claims.
+- Replaced unsupported fixed credit figures with actual-usage measurement.
+- Made the PBS example's site dependencies and completion criteria explicit.
+- Replaced opaque HTML bundles with accessible static HTML and shared responsive CSS while retaining the dark terminal-inspired style.
+
+The original design was developed from Canva slides with ChatGPT and Claude review and Claude Design. The updated pages retain the original presentation theme.

@@ -5,7 +5,7 @@ Two complementary presentations by Margaux Edwards, QUT Centre for Robotics. Ori
 | Presentation | Audience | Progression |
 |---|---|---|
 | [Beginner](https://margauxmedwards.github.io/ai4coding/presentation/) | Can read basic code; new to coding agents | Setup → vocabulary → tools/models → task brief → worked bug fix → review/undo → first skill |
-| [Advanced](https://margauxmedwards.github.io/ai4coding/) | Can review diffs and run tests | HPC context → success criteria → checkpoints → PBS template → customisation → tools/models → evaluation → cost/handoffs → verified lessons |
+| [Advanced](https://margauxmedwards.github.io/ai4coding/) | Can review diffs and run tests | Repeated research process → tool contract → known-answer checks → skill → provenance → tools/models → workflow evaluation |
 
 ## View and maintain
 
@@ -26,11 +26,13 @@ python3 -m unittest -v
 
 One test intentionally errors on empty input. The learner asks an agent for the smallest fix, then reruns all three tests and reviews the diff. Keep expected test results unchanged. The presentation shows the expected fix.
 
-## Advanced example
+## Advanced research workflow
 
-`examples/rosbag-sample.pbs` is the same teaching template displayed in the advanced presentation. It is **not a verified Aqua job**. Confirm the queue, resources, scratch variable, environment and project tasks before submission. Its two `pixi` tasks are explicit project adapters, not commands provided by this repository. No cluster job is submitted by this site.
+The advanced talk follows a repeatable experiment comparison: capture the procedure, develop a small validation/aggregation tool, test known-answer and invalid fixtures, and wrap the verified tool in a `compare-experiments` skill. It also covers dataset validation, literature matrices, figure generation and research provenance.
 
-The marker `COMPLETE` is written only after conversion validation and copy-back succeed. The validation task must implement the project's actual data checks. Job submission alone does not establish success.
+The CLI, repository layout and skill shown in this talk are illustrative designs to implement in a research repository. This presentation does not ship a comparison tool or install a skill. The small numerical table is a teaching fixture, not a research finding.
+
+`examples/rosbag-sample.pbs` remains a legacy teaching example from the earlier HPC version; it is not part of the current talk and is not a verified cluster job.
 
 ## What changed
 
@@ -40,7 +42,7 @@ The marker `COMPLETE` is written only after conversion validation and copy-back 
 - Added a dated model shortlist and a controlled evaluation method.
 - Corrected skill structure, portability, lifecycle hook and memory claims.
 - Replaced unsupported fixed credit figures with actual-usage measurement.
-- Made the PBS example's site dependencies and completion criteria explicit.
+- Refocused the advanced talk on developing research tools and skills, with validation fixtures, provenance and a worked improvement loop.
 - Replaced opaque HTML bundles with accessible static HTML and shared responsive CSS while retaining the dark terminal-inspired style.
 
 The original design was developed from Canva slides with ChatGPT and Claude review and Claude Design. The updated pages retain the original presentation theme.
